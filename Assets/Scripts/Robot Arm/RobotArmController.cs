@@ -1,3 +1,4 @@
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,6 +7,10 @@ using UnityEngine.InputSystem;
 public class RobotArmController : MonoBehaviour
 {
 
+    public bool isInUse = false;
+
+    public GameManager gameManager;
+    public CinemachineVirtualCamera localCamera;
     public GameObject target;
     public float armSpeed = 1;
     public float armRotationSpeed = 10;
@@ -16,7 +21,7 @@ public class RobotArmController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
 
     private void Update()
@@ -24,9 +29,26 @@ public class RobotArmController : MonoBehaviour
         targetMarker.transform.position = new Vector3(target.transform.position.x, transform.position.y + .5f, target.transform.position.z);
     }
 
+    public void InteractNode(Node pre)
+    {
+        gameManager.SetActiveCamera(localCamera);
+        isInUse = true;
+        target.GetComponent<Animator>().enabled = false;
+    }
+
     // Update is called once per frame
     void FixedUpdate()
     {
+        if (!isInUse) { return; }
+
+        //return to network view with x
+        if (Keyboard.current.xKey.wasPressedThisFrame)
+        {
+            gameManager.SetActiveCamera(gameManager.networkCamera);
+            target.GetComponent<Animator>().enabled = true;
+            isInUse = false;
+            gameManager.previousNode.SetActiveNode();
+        }
 
         //Hoch/Runter
         if (Keyboard.current.ctrlKey.isPressed && target.transform.position.y > transform.position.y)
