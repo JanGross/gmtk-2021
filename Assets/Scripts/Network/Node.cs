@@ -27,9 +27,16 @@ public class Node : MonoBehaviour
     {
         if (isActive) { return; }
         Debug.Log(string.Format("{0} became active node", gameObject.name));
-        isActive = true;
         UI.SetActive(true);
-        gameManager.networkCamera.transform.position = new Vector3(transform.position.x, gameManager.networkCamera.transform.position.y, transform.position.z);
+        gameManager.activeNode = this.gameObject;
+        gameManager.networkCamera.GetComponent<NetworkCamera>().targetPosition = new Vector3(transform.position.x, gameManager.networkCamera.transform.position.y, transform.position.z);
+        isActive = true;
+    }
+
+    public void DisableNode()
+    {
+        UI.SetActive(false);
+        isActive = false;
     }
 
     public void MoveToDirection(Direction dir)
@@ -38,8 +45,7 @@ public class Node : MonoBehaviour
         if (nodeComp)
         {
             nodeComp.SetActiveNode();
-            UI.SetActive(false);
-            isActive = false;
+            DisableNode();
         } else
         {
             connections[(int)dir].SendMessage("InteractNode");

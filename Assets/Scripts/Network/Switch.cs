@@ -30,7 +30,7 @@ public class Switch : MonoBehaviour
         {
             if (Vector3.Distance(transform.position, gameManager.player.transform.position) < interactionDistance) {
                 //Debug.Log("Switch is visible and in range");
-                if (Keyboard.current.eKey.wasPressedThisFrame)
+                if (Keyboard.current.eKey.wasPressedThisFrame && !gameManager.activeNode)
                 {
                     gameManager.SetActiveCamera(1);
                     debugNode.SendMessage("SetActiveNode", debugNode.GetComponent<Node>());

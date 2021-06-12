@@ -19,7 +19,11 @@ public class Conveyer : MonoBehaviour
         foreach (ContactPoint contact in collision.contacts)
         {
             //Debug.Log(string.Format("Current Collider: {0} Position {1}", contact.otherCollider.name, contact.otherCollider.transform.position.magnitude));
-            contact.otherCollider.GetComponent<Rigidbody>().AddForce(transform.forward * (conveyerSpeed * direction), ForceMode.Acceleration);
+            if(contact.otherCollider.GetComponent<Rigidbody>().velocity.magnitude < conveyerSpeed)
+            {
+                contact.otherCollider.GetComponent<Rigidbody>().AddForce(transform.forward * (conveyerSpeed * direction), ForceMode.Acceleration);
+
+            }
         }
     }
 }
