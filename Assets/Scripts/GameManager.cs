@@ -1,3 +1,4 @@
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,9 +8,11 @@ public class GameManager : MonoBehaviour
 {
 
     public GameObject player;
-    public Camera[] cameras;
-    public GameObject networkCamera;
+    public CinemachineVirtualCamera activeCamera;
+    public CinemachineVirtualCamera networkCamera;
     public GameObject activeNode;
+    public Node previousNode;
+    public bool networkView = false;
 
     // Start is called before the first frame update
     void Start()
@@ -17,16 +20,14 @@ public class GameManager : MonoBehaviour
 
     }
 
-    public void SetActiveCamera(int cam)
-    {
-        for (int i = 0; i < cameras.Length; i++)
-        {
-            if (i == cam)
-            {
+    public void SetActiveCamera(CinemachineVirtualCamera vCam)
+    {   
+        vCam.Priority = 20;
+        activeCamera.Priority = 0;
+        activeCamera = vCam;
 
-            }
-            cameras[i].enabled = (i == cam);
-        }
+        if(!activeCamera == networkCamera) { networkView = false; }
+           
     }
 
     // Update is called once per frame
@@ -38,9 +39,10 @@ public class GameManager : MonoBehaviour
     private void FixedUpdate()
     {
 
-        if (Keyboard.current.xKey.wasPressedThisFrame)
+        //Leave network view with x
+        if (Keyboard.current.xKey.wasPressedThisFrame && networkView)
         {
-            SetActiveCamera(0);
+            SetActiveCamera(networkCamera);
             activeNode.GetComponent<Node>().DisableNode();
             activeNode = null;
         }

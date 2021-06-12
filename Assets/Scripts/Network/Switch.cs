@@ -32,7 +32,9 @@ public class Switch : MonoBehaviour
                 //Debug.Log("Switch is visible and in range");
                 if (Keyboard.current.eKey.wasPressedThisFrame && !gameManager.activeNode)
                 {
-                    gameManager.SetActiveCamera(1);
+                    gameManager.previousNode = debugNode;
+                    gameManager.activeNode = debugNode.gameObject;
+                    gameManager.SetActiveCamera(gameManager.networkCamera);
                     debugNode.SendMessage("SetActiveNode", debugNode.GetComponent<Node>());
                 }
             }

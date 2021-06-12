@@ -28,6 +28,7 @@ public class Node : MonoBehaviour
         if (isActive) { return; }
         Debug.Log(string.Format("{0} became active node", gameObject.name));
         UI.SetActive(true);
+        gameManager.previousNode = gameManager.activeNode.GetComponent<Node>();
         gameManager.activeNode = this.gameObject;
         gameManager.networkCamera.GetComponent<NetworkCamera>().targetPosition = new Vector3(transform.position.x, gameManager.networkCamera.transform.position.y, transform.position.z);
         isActive = true;
@@ -48,7 +49,8 @@ public class Node : MonoBehaviour
             DisableNode();
         } else
         {
-            connections[(int)dir].SendMessage("InteractNode");
+            connections[(int)dir].SendMessage("InteractNode", this);
+            gameManager.previousNode = this;
         }
 
         
