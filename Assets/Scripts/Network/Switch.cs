@@ -33,7 +33,7 @@ public class Switch : MonoBehaviour
                 if (Keyboard.current.eKey.wasPressedThisFrame)
                 {
                     gameManager.SetActiveCamera(1);
-                    debugNode.SetActiveNode();
+                    debugNode.SendMessage("SetActiveNode", debugNode.GetComponent<Node>());
                 }
             }
         }

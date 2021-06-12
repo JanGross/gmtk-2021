@@ -1057,6 +1057,10 @@ PrefabInstance:
       propertyPath: connections.Array.data[1]
       value: 
       objectReference: {fileID: 1143571366}
+    - target: {fileID: 6314262857863842719, guid: cd2709ce625391747b56d49b13717da0, type: 3}
+      propertyPath: connections.Array.data[3]
+      value: 
+      objectReference: {fileID: 1643453143}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cd2709ce625391747b56d49b13717da0, type: 3}
 --- !u!4 &852901939 stripped
@@ -1995,7 +1999,7 @@ GameObject:
   - component: {fileID: 1643453144}
   - component: {fileID: 1643453148}
   m_Layer: 0
-  m_Name: Conveyer (6)
+  m_Name: Conveyor Paddle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

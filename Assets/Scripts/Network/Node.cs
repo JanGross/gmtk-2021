@@ -34,8 +34,17 @@ public class Node : MonoBehaviour
 
     public void MoveToDirection(Direction dir)
     {
-        connections[(int)dir].GetComponent<Node>().SetActiveNode();
-        UI.SetActive(false);
-        isActive = false;
+        Node nodeComp = connections[(int)dir].GetComponent<Node>();
+        if (nodeComp)
+        {
+            nodeComp.SetActiveNode();
+            UI.SetActive(false);
+            isActive = false;
+        } else
+        {
+            connections[(int)dir].SendMessage("InteractNode");
+        }
+
+        
     }
 }

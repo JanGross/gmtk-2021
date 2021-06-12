@@ -8,4 +8,11 @@ public class DirectionPaddle : MonoBehaviour
     {
         gameObject.SetActive(!gameObject.activeSelf);
     }
+
+    public void InteractNode()
+    {
+        this.GetComponent<Collider>().enabled = !this.GetComponent<Collider>().enabled;
+        this.GetComponent<MeshRenderer>().enabled = !this.GetComponent<MeshRenderer>().enabled;
+
+    }
 }
