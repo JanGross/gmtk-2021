@@ -6,7 +6,6 @@ using UnityEngine.InputSystem;
 public class Switch : MonoBehaviour
 {
     public GameManager gameManager;
-    public float interactionDistance = 10;
     private Renderer renderer;
 
     public Node debugNode;
@@ -14,7 +13,7 @@ public class Switch : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        renderer = gameObject.GetComponent<Renderer>();
+        
     }
 
 
@@ -26,21 +25,21 @@ public class Switch : MonoBehaviour
        
 
 
-        if (renderer.isVisible)
-        {
-            if (Vector3.Distance(transform.position, gameManager.player.transform.position) < interactionDistance) {
-                //Debug.Log("Switch is visible and in range");
-                if (Keyboard.current.eKey.wasPressedThisFrame && !gameManager.activeNode)
-                {
-                    gameManager.previousNode = debugNode;
-                    gameManager.activeNode = debugNode.gameObject;
-                    gameManager.SetActiveCamera(gameManager.networkCamera);
-                    debugNode.SendMessage("SetActiveNode", debugNode.GetComponent<Node>());
-                    gameManager.player.GetComponent<StarterAssets.FirstPersonController>().enabled = false;
-                }
-            }
-        }
         
+        
+    }
+
+    public void PlayerInteract()
+    {
+        if(!gameManager.activeNode)
+        {
+            gameManager.previousNode = debugNode;
+            gameManager.activeNode = debugNode.gameObject;
+            gameManager.SetActiveCamera(gameManager.networkCamera);
+            debugNode.SendMessage("SetActiveNode", debugNode.GetComponent<Node>());
+            gameManager.player.GetComponent<StarterAssets.FirstPersonController>().enabled = false;
+            Cursor.lockState = CursorLockMode.Confined;
+        }
     }
 
   

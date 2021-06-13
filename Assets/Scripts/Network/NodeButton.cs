@@ -10,7 +10,29 @@ public class NodeButton : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        
+    }
+
+    private void Update()
+    {
         if (node.connections[(int)direction] == null)
+        {
+            gameObject.GetComponent<Renderer>().material.color = Color.gray;
+            gameObject.GetComponent<Collider>().enabled = false;
+            return;
+        }
+        
+        //Connected devices have no Node
+        if(node.connections[(int)direction].GetComponent<Node>() == null)
+        {
+            return;
+        }
+
+        if (node.connections[(int)direction].GetComponent<Node>().isUnlocked)
+        {
+            gameObject.GetComponent<Renderer>().material.color = Color.green;
+            gameObject.GetComponent<Collider>().enabled = true;
+        } else
         {
             gameObject.GetComponent<Renderer>().material.color = Color.gray;
             gameObject.GetComponent<Collider>().enabled = false;

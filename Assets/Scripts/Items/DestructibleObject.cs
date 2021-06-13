@@ -16,6 +16,7 @@ public class DestructibleObject : MonoBehaviour
     {
         gameObject.GetComponent<Rigidbody>().isKinematic = true;
         gameObject.transform.position = originalPosition;
+        gameObject.transform.parent = null;
         gameObject.GetComponent<Rigidbody>().isKinematic = false;
     }
 }

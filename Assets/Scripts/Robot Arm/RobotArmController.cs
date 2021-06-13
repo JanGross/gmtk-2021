@@ -17,6 +17,7 @@ public class RobotArmController : MonoBehaviour
     public float armRotationSpeed = 10;
     public Vector3 targetConstraints;
     public GameObject targetMarker;
+    public GameObject hint;
 
 
     //Audio
@@ -39,6 +40,9 @@ public class RobotArmController : MonoBehaviour
     {
         RaycastHit hit;
         Physics.Raycast(grabber.grabSpot.transform.position, Vector3.down, out hit, 10);
+
+        hint.SetActive(isInUse);
+        
 
         targetMarker.transform.position = new Vector3(grabber.grabSpot.transform.position.x, hit.point.y + 0.05f, grabber.grabSpot.transform.position.z);
     }
@@ -78,7 +82,7 @@ public class RobotArmController : MonoBehaviour
         //Hoch/Runter
         if (Keyboard.current.ctrlKey.isPressed && target.transform.position.y > transform.position.y)
         {
-            if(Physics.Raycast(grabber.transform.position, Vector3.down, .9f))
+            if(Physics.Raycast(grabber.grabSpot.transform.position, Vector3.down, .1f))
             {
                 target.transform.localPosition -= Vector3.down * Time.deltaTime * armSpeed;
             }
@@ -94,7 +98,7 @@ public class RobotArmController : MonoBehaviour
 
         //Debug.Log(-targetConstraints.z);
         //Left/Right
-        if (Keyboard.current.aKey.isPressed && target.transform.localPosition.z > -targetConstraints.z)
+        /*if (Keyboard.current.aKey.isPressed && target.transform.localPosition.z > -targetConstraints.z)
         {
             target.transform.localPosition += Vector3.back * Time.deltaTime * armSpeed;
             isMoving = true;
@@ -104,7 +108,7 @@ public class RobotArmController : MonoBehaviour
         {
             target.transform.localPosition += Vector3.forward * Time.deltaTime * armSpeed;
             isMoving = true;
-        }
+        }*/
 
         //Left/Right
         if (Keyboard.current.qKey.isPressed)

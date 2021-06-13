@@ -52,6 +52,7 @@ public class SpotController : MonoBehaviour
         backgroundSource.clip = idleSound;
         backgroundSource.Play();
 
+        Debug.Log("Spot is now in use");
         inUse = true;
 
         gameManager.SetActiveCamera(localCamera);
@@ -77,7 +78,7 @@ public class SpotController : MonoBehaviour
             float newRotation = turnInput * turnSpeed * Time.deltaTime * Input.GetAxisRaw("Vertical");
             sphere.transform.Rotate(0, newRotation, 0, Space.Self);
 
-            transform.position = sphere.transform.position;
+            //transform.position = sphere.transform.position;
             transform.rotation = sphere.transform.rotation;
 
             RaycastHit hit;
@@ -143,7 +144,15 @@ public class SpotController : MonoBehaviour
             sfxSource.Stop();
         }
 
-        if (!blocked && moveInput > 0)
-            sphere.transform.Translate(Vector3.forward * moveInput * Time.deltaTime, Space.Self);
+        if (moveInput != 0)
+        {
+            Rigidbody rb = GetComponent<Rigidbody>();
+            // Convert direction into Rigidbody space.
+            Vector3 direction = rb.rotation * Vector3.forward;
+            rb.MovePosition(rb.position + direction * moveInput * Time.deltaTime);
+            //sphere.transform.Translate(Vector3.forward * moveInput * Time.deltaTime, Space.Self);
+
+        }
+
     }
 }

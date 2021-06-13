@@ -11,6 +11,8 @@ public class Node : MonoBehaviour
     public GameObject[] connections;
     public GameObject UI;
 
+    public bool isUnlocked = true;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -20,7 +22,10 @@ public class Node : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if(!isUnlocked)
+        {
+            DisableNode();
+        }   
     }
 
     public void SetActiveNode()

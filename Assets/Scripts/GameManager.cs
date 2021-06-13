@@ -15,6 +15,9 @@ public class GameManager : MonoBehaviour
     public Node previousNode;
     public bool networkView = false;
 
+    public bool playerHasUSB = false;
+    public bool playerHasBattery = false;
+
     private bool exiting = false;
 
     // Start is called before the first frame update
@@ -39,12 +42,13 @@ public class GameManager : MonoBehaviour
         activeCamera = vCam;
 
         networkView = (!exiting && activeCamera == networkCamera) ? true : false;
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        networkView = (activeCamera == networkCamera) ? true : false;
     }
 
     private void FixedUpdate()
@@ -52,7 +56,9 @@ public class GameManager : MonoBehaviour
         //Leave network view with x
         if (Keyboard.current.xKey.wasPressedThisFrame && networkView)
         {
-            SetActiveCamera(networkCamera);
+            player.GetComponent<StarterAssets.FirstPersonController>().enabled = true;
+            Cursor.lockState = CursorLockMode.Locked;
+            SetActiveCamera(playerCamera);
             activeNode.GetComponent<Node>().DisableNode();
             activeNode = null;
         }
