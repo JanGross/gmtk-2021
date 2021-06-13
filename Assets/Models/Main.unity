@@ -976,7 +976,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.7091503, y: 1}
+    m_SensorSize: {x: 1.5816994, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -1607,7 +1607,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 714303808}
-  m_LocalRotation: {x: -0.00849294, y: 0.30381006, z: -0.073214345, w: -0.9498774}
+  m_LocalRotation: {x: -0.008523712, y: 0.3021867, z: -0.072742335, w: -0.95043105}
   m_LocalPosition: {x: -0, y: 0.36, z: 2.5}
   m_LocalScale: {x: 4, y: 4, z: 4}
   m_Children:
@@ -1644,7 +1644,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.7091503, y: 1}
+    m_SensorSize: {x: 1.5816994, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -3733,7 +3733,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.7091503, y: 1}
+    m_SensorSize: {x: 1.5816994, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -3774,6 +3774,7 @@ MonoBehaviour:
   player: {fileID: 750378831}
   activeCamera: {fileID: 381303739}
   networkCamera: {fileID: 561286952}
+  playerCamera: {fileID: 381303739}
   activeNode: {fileID: 0}
   previousNode: {fileID: 0}
   networkView: 0

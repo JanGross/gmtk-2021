@@ -10,9 +10,12 @@ public class GameManager : MonoBehaviour
     public GameObject player;
     public CinemachineVirtualCamera activeCamera;
     public CinemachineVirtualCamera networkCamera;
+    public CinemachineVirtualCamera playerCamera;
     public GameObject activeNode;
     public Node previousNode;
     public bool networkView = false;
+
+    private bool exiting = false;
 
     // Start is called before the first frame update
     void Start()
@@ -21,13 +24,21 @@ public class GameManager : MonoBehaviour
     }
 
     public void SetActiveCamera(CinemachineVirtualCamera vCam)
-    {   
+    {
+        if (vCam == networkCamera && activeCamera != networkCamera && activeCamera != playerCamera)
+        {
+            exiting = true;
+        }
+        else
+        {
+            exiting = false;
+        }
+
         vCam.Priority = 20;
         activeCamera.Priority = 0;
         activeCamera = vCam;
 
-        if(!activeCamera == networkCamera) { networkView = false; }
-           
+        networkView = (!exiting && activeCamera == networkCamera) ? true : false;
     }
 
     // Update is called once per frame
@@ -38,11 +49,9 @@ public class GameManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-
         //Leave network view with x
         if (Keyboard.current.xKey.wasPressedThisFrame && networkView)
         {
-            player.GetComponent<StarterAssets.FirstPersonController>().enabled = true;
             SetActiveCamera(networkCamera);
             activeNode.GetComponent<Node>().DisableNode();
             activeNode = null;
