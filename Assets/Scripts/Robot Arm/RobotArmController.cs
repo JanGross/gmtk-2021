@@ -10,6 +10,7 @@ public class RobotArmController : MonoBehaviour
     public bool isInUse = false;
 
     public GameManager gameManager;
+    public Grapparoni grabber;
     public CinemachineVirtualCamera localCamera;
     public GameObject target;
     public float armSpeed = 1;
@@ -22,6 +23,7 @@ public class RobotArmController : MonoBehaviour
     void Start()
     {
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        target.GetComponent<Animator>().speed = 1f;
     }
 
     private void Update()
@@ -48,6 +50,12 @@ public class RobotArmController : MonoBehaviour
             target.GetComponent<Animator>().enabled = true;
             isInUse = false;
             gameManager.previousNode.SetActiveNode();
+        }
+
+        //return to network view with x
+        if (Keyboard.current.spaceKey.wasPressedThisFrame)
+        {
+            grabber.GrabClosest();
         }
 
         //Hoch/Runter
