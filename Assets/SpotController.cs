@@ -1,6 +1,8 @@
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class SpotController : MonoBehaviour
 {
@@ -16,6 +18,7 @@ public class SpotController : MonoBehaviour
     public AudioClip idleSound;
     public AudioClip interactSound;
     public AudioClip moveClip;
+    public AudioClip powerUpSound;
 
     private float speed = 6f;
     private float revSpeed = 5f;
@@ -27,55 +30,72 @@ public class SpotController : MonoBehaviour
 
     private Light light;
     private bool blocked = false;
+    private bool inUse = false;
+
+    private GameManager gameManager;
+    public CinemachineVirtualCamera localCamera;
 
     private void Start()
     {
         sphere.transform.parent = null;
 
+        light = visor.GetComponentInChildren<Light>();
+
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+    }
+
+    public void InteractNode(Node pre)
+    {
+        // power on the robot
+        StartCoroutine(FlashRoutine());
+
         backgroundSource.clip = idleSound;
         backgroundSource.Play();
 
-        light = visor.GetComponentInChildren<Light>();
+        inUse = true;
 
-        StartCoroutine(FlashRoutine());
+        gameManager.SetActiveCamera(localCamera);
     }
 
     private void Update()
     {
-        moveInput = Input.GetAxisRaw("Vertical");
-        turnInput = Input.GetAxisRaw("Horizontal");
-
-        moveInput *= moveInput > 0 ? speed : revSpeed;
-
-        if (moveInput != 0 && wheels.Length > 0)
+        if (inUse)
         {
-            for (int i = 0; i < wheels.Length; i++)
+            moveInput = Input.GetAxisRaw("Vertical");
+            turnInput = Input.GetAxisRaw("Horizontal");
+
+            moveInput *= moveInput > 0 ? speed : revSpeed;
+
+            if (moveInput != 0 && wheels.Length > 0)
             {
-                wheels[i].transform.Rotate(0, 0, moveInput / 60 * 360 * Time.deltaTime);
+                for (int i = 0; i < wheels.Length; i++)
+                {
+                    wheels[i].transform.Rotate(0, 0, moveInput / 60 * 360 * Time.deltaTime);
+                }
             }
-        }
 ;
-        float newRotation = turnInput * turnSpeed * Time.deltaTime * Input.GetAxisRaw("Vertical");
-        sphere.transform.Rotate(0, newRotation, 0, Space.Self);
+            float newRotation = turnInput * turnSpeed * Time.deltaTime * Input.GetAxisRaw("Vertical");
+            sphere.transform.Rotate(0, newRotation, 0, Space.Self);
 
-        transform.position = sphere.transform.position;
-        transform.rotation = sphere.transform.rotation;
+            transform.position = sphere.transform.position;
+            transform.rotation = sphere.transform.rotation;
 
-        RaycastHit hit;
-        if (Physics.Raycast(transform.position, transform.forward, out hit, 1))
-        {
-            if (hit.transform.tag == "Wall")
+            RaycastHit hit;
+            if (Physics.Raycast(transform.position, transform.forward, out hit, 1))
             {
-                blocked = true;
+                if (hit.transform.tag == "Wall")
+                {
+                    blocked = true;
+                }
+                else
+                {
+                    blocked = false;
+                }
             }
             else
             {
                 blocked = false;
             }
-        }
-        else
-        {
-            blocked = false;
         }
     }
 
@@ -94,6 +114,22 @@ public class SpotController : MonoBehaviour
     }
     private void LateUpdate()
     {
+        if (!inUse) { return; }
+
+        if (Keyboard.current.xKey.wasPressedThisFrame)
+        {
+            inUse = false;
+
+            StopCoroutine(FlashRoutine());
+
+            backgroundSource.Stop();
+            sfxSource.Stop();
+            interactSource.Stop();
+
+            gameManager.SetActiveCamera(gameManager.networkCamera);
+            gameManager.previousNode.SetActiveNode();
+        }
+
         if (moveInput != 0)
         {
             if (!sfxSource.isPlaying)
