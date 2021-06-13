@@ -8,6 +8,9 @@ public class Grapparoni : MonoBehaviour
     public float radius;
     public GameObject grabSpot;
     public GameObject grabbedObject;
+    
+    [Header("DEBUG")]
+    public GameObject debugClosest;
 
     private LineRenderer lineRenderer;
     // Start is called before the first frame update
@@ -21,7 +24,7 @@ public class Grapparoni : MonoBehaviour
     {
         Collider[] items = Physics.OverlapSphere(grabSpot.transform.position, radius);
         if (items.Length < 1) { lineRenderer.enabled = false; return; }
-        GameObject closest = items[0].gameObject;
+        GameObject closest = null;
         foreach (Collider item in items)
         {
             Rigidbody rb = item.gameObject.GetComponent<Rigidbody>();
@@ -29,21 +32,20 @@ public class Grapparoni : MonoBehaviour
             if (rb)
             {
                 float dist = Vector3.Distance(item.transform.position, transform.position);
-                if (dist < Vector3.Distance(closest.transform.position, transform.position))
+                if (closest == null || dist < Vector3.Distance(closest.transform.position, transform.position))
                 {
                     closest = item.gameObject;
                 }
             }
         }
+
+        if (!closest) { lineRenderer.enabled = false; return; }
         Rigidbody closestRb = closest.transform.GetComponent<Rigidbody>();
         if (closestRb)
         {
             lineRenderer.enabled = true;
             lineRenderer.SetPosition(0, grabSpot.transform.position);
             lineRenderer.SetPosition(1, closest.transform.position);
-        } else
-        {
-            lineRenderer.enabled = false;
         }
     }
 
@@ -72,7 +74,7 @@ public class Grapparoni : MonoBehaviour
 
         Collider[] items = Physics.OverlapSphere(grabSpot.transform.position, radius);
         if (items.Length < 1) { return; }
-        GameObject closest = items[0].gameObject;
+        GameObject closest = null;
         foreach (Collider item in items)
         {
             Rigidbody rb = item.gameObject.GetComponent<Rigidbody>();
@@ -80,12 +82,14 @@ public class Grapparoni : MonoBehaviour
             if(rb)
             {
                 float dist = Vector3.Distance(item.transform.position, transform.position);
-                if (dist < Vector3.Distance(closest.transform.position, transform.position)) {
+                if (closest == null || dist < Vector3.Distance(closest.transform.position, transform.position)) {
                     closest = item.gameObject;
+                    debugClosest = closest;
                 }
             }
         }
 
+        if(!closest) { return; }
         Rigidbody closestRb = closest.transform.GetComponent<Rigidbody>();
         if (closestRb)
         {
