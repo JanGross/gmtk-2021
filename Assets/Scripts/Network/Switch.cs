@@ -36,6 +36,7 @@ public class Switch : MonoBehaviour
                     gameManager.activeNode = debugNode.gameObject;
                     gameManager.SetActiveCamera(gameManager.networkCamera);
                     debugNode.SendMessage("SetActiveNode", debugNode.GetComponent<Node>());
+                    gameManager.player.GetComponent<StarterAssets.FirstPersonController>().enabled = false;
                 }
             }
         }

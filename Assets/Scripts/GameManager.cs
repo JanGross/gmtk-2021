@@ -42,6 +42,7 @@ public class GameManager : MonoBehaviour
         //Leave network view with x
         if (Keyboard.current.xKey.wasPressedThisFrame && networkView)
         {
+            player.GetComponent<StarterAssets.FirstPersonController>().enabled = true;
             SetActiveCamera(networkCamera);
             activeNode.GetComponent<Node>().DisableNode();
             activeNode = null;
