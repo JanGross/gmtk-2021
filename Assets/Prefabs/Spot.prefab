@@ -217,7 +217,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sphere: {fileID: 3129800592749546628}
   visor: {fileID: 5734351610328079135}
-  detector: {fileID: 0}
   wheels:
   - {fileID: 431178397659895055}
   - {fileID: 4712379551056951868}
@@ -231,6 +230,8 @@ MonoBehaviour:
   idleSound: {fileID: 8300000, guid: 03bf883391d278b4d865ea9ef483ea2c, type: 3}
   interactSound: {fileID: 8300000, guid: bd73a052a46b6b441805c014632fd1ea, type: 3}
   moveClip: {fileID: 8300000, guid: 5c33895e0bb8014479d8f62314b03c98, type: 3}
+  powerUpSound: {fileID: 0}
+  localCamera: {fileID: 0}
 --- !u!65 &8531514674641296185
 BoxCollider:
   m_ObjectHideFlags: 0
